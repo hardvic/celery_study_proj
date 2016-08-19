@@ -87,3 +87,8 @@ ENV/
 
 # Rope project settings
 .ropeproject
+将删除 .idea/
+将删除 w1.pid
+
+*.log
+*.pid

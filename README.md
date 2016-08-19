@@ -2,7 +2,7 @@
 celery demo
 
 项目结构
-
+--------
 celery_study_proj
 ├── base_example
 │   ├── celery.py
@@ -82,4 +82,24 @@ False
 'FAILURE'
 
 3. 返回结果状态
+PENDING -> STARTED -> SUCCESS
+
+三. Canvas: Designing Workflows (需要配置对应的 backend)
+1. subtask 
+* subtask.apply_async(args=(), kwargs={}, **options)
+* subtask.delay(*args, **kwargs)
+
+2.Groups
+group 通过并行的方式调用一组任务, 并且返回特殊的结果实例, 
+你能通过这个结果实例看到返回的结果, 并且通过对应的顺序获取返回的结果.
+>>> from celery import group
+>>> from proj.tasks import add
+
+>>> group(add.s(i, i) for i in xrange(10))().get()
+[0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+
+部分group
+>>> g = group(add.s(i) for i in xrange(10))
+>>> g(10).get()
+[10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
 

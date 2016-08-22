@@ -1,0 +1,12 @@
+# !/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from __future__ import absolute_import
+
+from combine_example.celery_app import app
+
+
+@app.task
+def add(x, y):
+    return x + y
+

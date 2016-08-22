@@ -49,6 +49,16 @@ celery multi stop w1 -A base_example -l info
 等待 worker 执行结束
 celery multi stopwait w1 -A base_example -l info
 
+4. 当定义 'app' 文件的名称不为 'celery' 时,
+ 会出现 的错误
+ 这时候可以用 --app 参数制定对应的 定义文件
+ 参考:  http://docs.celeryproject.org/en/latest/getting-started/next-steps.html#about-the-app-argument
+  启动:
+    celery multi start w1 --app=combine_example.celery_app:app -l info
+    celery multi start w1 --app=combine_example.celery_app -l info
+  停止:
+    celery multi start w1 --app=combine_example.celery_app:app -l info
+    celery multi start w1 --app=combine_example.celery_app -l info    
 
 二. Calling Task
 1. 调用的三种方式 delay()  apply_async()   applying(__call__)

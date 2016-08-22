@@ -103,3 +103,69 @@ group 通过并行的方式调用一组任务, 并且返回特殊的结果实例
 >>> g(10).get()
 [10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
 
+3.Chains
+任务之间能够联系在一起, 一个任务能够调用另一个任务的返回结果.
+
+4.Chords 
+chord 是一个有回调的 callback
+
+
+四.Routing
+
+
+五. Exchanges, queues and routing keys
+
+1. Messages are sent to exchanges
+2. An exchange routes messages to one or more queues. Several exchange
+   type exists, providing different ways to do routing, or implementing
+   different message scenarios.
+3. Ths message waits in the queue until someone consumes it.
+4. The message is deleted from the queue when ti has been acknowledged.
+
+The steps required to send and receive message are:
+1. Create an exchange
+2. Create a queue
+3. Bind the queue to the exchange
+
+Demo:
+
+------------------------------------------------
+from kombu import Exchange, Queue
+CELERY_QUEUES = (Queue('default', Exchange('default'), routing_key='default'), 
+                Queue('videos', Exchange('media'), routing_key='media.video'),
+                Queue('images', Exchange('media'), routing_key='media.image'),
+)
+CELERY_DEFAULT_QUEUE = 'default'
+CELERY_DEFAULT_EXCHANGE_TYPE = 'direct'
+CELERY_DEFAULT_ROUTING_KEY = 'default'
+------------------------------------------------
+
+Exchanges Type
+direct, topic, fanout, headers
+
+
+Routing Tasks
+defining queues
+demo (configuration with three queues: One for video, one for images and 
+    default queue for everything else)
+
+**********
+default_exchange = Exchange('default', type='direct')
+media_exchange = Exchange('media', type='direct')
+
+CELERY_QUEUES = (
+    Queue('default', default_exchange, routing_key='default'),
+    Queue('videos', media_exchange, routing_key='media.video'),
+    Queue('images', media_exchange, routing_key='media.image')
+)
+
+CELERY_DEFAULT_QUEUE = 'default'
+CELERY_DEFAULT_EXCHANGE = 'default'
+CELERY_DEFAULT_ROUTING_KEY = 'default'
+**********
+
+
+
+
+
+

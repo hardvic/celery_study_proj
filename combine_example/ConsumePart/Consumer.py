@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from combine_example.direct_tasks.tasks import add, add_bind, mul, xsum
-from combine_example.direct_tasks.tasks import A
+from combine_example.direct_tasks.tasks import A, pr_test
 from celery import chain, group, chord
 from celery.result import ResultBase
+from datetime import datetime, timedelta
 
 
 class Consumer(object):
@@ -36,8 +37,14 @@ class Consumer(object):
     def chunk_consumer(self):
         pass
 
+    # periodic 目前只支持 apply_async 中的 eta 和 countdown 两种方式
     def periodic_consumer(self):
         pass
+
+    def periodic_eta_consumer(self):
+        target_time = datetime.now() + timedelta(seconds=5)
+        return pr_test.apply_async((10, 10), eta=target_time)
+
 
     def a_consumer(self, x):
         result = A.delay(x)
@@ -52,6 +59,11 @@ if __name__ == '__main__':
     test = Consumer()
     print(test.group_consumer(), )
     print(test.chord_consumer(), )
+    re = test.periodic_eta_consumer()
+    time.sleep(7)
+    print('hi')
+    print(re)
+    print(re.get())
 
 
     # chain 的实验

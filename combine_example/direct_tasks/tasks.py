@@ -11,6 +11,12 @@ def add(x, y):
     return x + y
 
 
+@app.task
+def pr_test(x, y):
+    print('pr_test')
+    return 'this is pr_test'
+
+
 @app.task(bind=True)
 def add_bind(x, y):
     return x + y

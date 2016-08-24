@@ -14,6 +14,8 @@ app = Celery(main='celery_study_proj',
              broker=BROKER_URL,
              include='combine_example.direct_tasks.tasks')
 
+app.conf.CELERY_TIMEZONE = 'Asia/Shanghai'
+
 if __name__ == '__main__':
     app.start()
 
